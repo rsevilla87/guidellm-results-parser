@@ -18,7 +18,7 @@ from opensearchpy.exceptions import ConnectionError, RequestError
 from opensearchpy.helpers import bulk
 
 
-def parse_benchmarks(file_path: str, uuid: str, job_name: str) -> Dict[str, Any]:
+def parse_benchmarks(file_path: str, uuid: str, job_name: str, sample: str) -> Dict[str, Any]:
     """
     Parse the benchmarks.json file and extract key metrics.
     
@@ -52,6 +52,7 @@ def parse_benchmarks(file_path: str, uuid: str, job_name: str) -> Dict[str, Any]
         # Benchmark identification
         "uuid": uuid,
         "job_name": job_name,
+        "sample": sample,
         
         # Timing information
         "timestamp": datetime.fromtimestamp(benchmark.get('start_time', 0)).isoformat(),
@@ -150,6 +151,7 @@ def parse_benchmarks(file_path: str, uuid: str, job_name: str) -> Dict[str, Any]
             "ttft_ms": request.get('time_to_first_token_ms', 0),
             "uuid": uuid,
             "job_name": job_name,
+            "sample": sample,
         })
     
     # Process errored requests (generative_text_error)
@@ -228,11 +230,12 @@ def main():
     parser.add_argument('--es-index', help='OpenSearch index name')
     parser.add_argument('--output', '-o', help='Output file path (default: stdout)')
     parser.add_argument('--job-name', '-j', help='Job Name', default='')
+    parser.add_argument('--sample', '-s', help='Sample number', default=0)
     
     args = parser.parse_args()
     
     # Parse benchmarks
-    results = parse_benchmarks(args.results, args.uuid, args.job_name)
+    results = parse_benchmarks(args.results, args.uuid, args.job_name, args.sample)
     
     # Index to OpenSearch if endpoint and index are provided
     if args.es_server and args.es_index:
