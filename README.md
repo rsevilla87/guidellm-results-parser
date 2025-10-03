@@ -265,11 +265,8 @@ Errors are printed to stderr with descriptive messages, and the script exits wit
 
 ## License
 
-[Specify your license here]
+This project is released under the [Apache License 2.0](LICENSE).
 
-## Contributing
-
-[Add contribution guidelines here]
 
 ## Support
 
