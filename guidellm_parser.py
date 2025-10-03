@@ -144,9 +144,9 @@ def parse_benchmarks(file_path: str, uuid: str, job_name: str) -> Dict[str, Any]
             "request_latency_seconds": request.get('request_latency', 0),
             "tokens_per_second": request.get('tokens_per_second', 0),
             "output_tokens_per_second": request.get('output_tokens_per_second', 0),
-            "time_per_output_token_ms": request.get('time_per_output_token_ms', 0),
-            "inter_token_latency_ms": request.get('inter_token_latency_ms', 0),
-            "time_to_first_token_ms": request.get('time_to_first_token_ms', 0),
+            "tpot_ms": request.get('time_per_output_token_ms', 0),
+            "itl_ms": request.get('inter_token_latency_ms', 0),
+            "ttft_ms": request.get('time_to_first_token_ms', 0),
             "uuid": uuid,
             "job_name": job_name,
         })

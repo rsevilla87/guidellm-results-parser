@@ -73,9 +73,9 @@ For each individual request (successful or errored), the parser extracts:
 - `request_latency_seconds`: Total request latency in seconds
 - `tokens_per_second`: Total tokens generated per second for this request
 - `output_tokens_per_second`: Output tokens generated per second for this request
-- `time_per_output_token_ms`: Time per output token in milliseconds
-- `inter_token_latency_ms`: Inter-token latency in milliseconds
-- `time_to_first_token_ms`: Time to first token in milliseconds
+- `tpot_ms`: Time per output token in milliseconds
+- `itl_ms`: Inter-token latency in milliseconds
+- `ttft_ms`: Time to first token in milliseconds
 - `uuid`: Benchmark UUID (for correlation)
 - `job_name`: Job name (for correlation)
 
@@ -205,9 +205,9 @@ The parser outputs a JSON array where:
     "request_latency_seconds": 2.3312907218933105,
     "tokens_per_second": 108.09462656606951,
     "output_tokens_per_second": 54.90520714467022,
-    "time_per_output_token_ms": 10.28873398900032,
-    "inter_token_latency_ms": 10.369747642457016,
-    "time_to_first_token_ms": 1014.298677444458,
+    "tpot_ms": 10.28873398900032,
+    "itl_ms": 10.369747642457016,
+    "ttft_ms": 1014.298677444458,
     "uuid": "c054eaf6-7b10-4dd5-a462-fbc010f7b09d",
     "job_name": "interactive-chat"
   },
@@ -218,9 +218,9 @@ The parser outputs a JSON array where:
     "request_latency_seconds": 2.334320545196533,
     "tokens_per_second": 102.81364335067946,
     "output_tokens_per_second": 54.83394312036238,
-    "time_per_output_token_ms": 10.307451710104942,
-    "inter_token_latency_ms": 10.388612747192383,
-    "time_to_first_token_ms": 1014.9099826812744,
+    "tpot_ms": 10.307451710104942,
+    "itl_ms": 10.388612747192383,
+    "ttft_ms": 1014.9099826812744,
     "uuid": "c054eaf6-7b10-4dd5-a462-fbc010f7b09d",
     "job_name": "interactive-chat"
   }
