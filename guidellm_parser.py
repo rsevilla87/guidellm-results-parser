@@ -15,6 +15,7 @@ from typing import Dict, Any, Optional
 
 from opensearchpy import OpenSearch
 from opensearchpy.exceptions import ConnectionError, RequestError
+from opensearchpy.helpers import bulk
 
 
 def parse_benchmarks(file_path: str, uuid: str, job_name: str) -> Dict[str, Any]:
@@ -167,12 +168,12 @@ def parse_benchmarks(file_path: str, uuid: str, job_name: str) -> Dict[str, Any]
     return result
 
 
-def index_to_opensearch(data: Dict[str, Any], es_server: str, index_name: str) -> bool:
+def index_to_opensearch(data: list, es_server: str, index_name: str) -> bool:
     """
-    Index the parsed benchmark data to OpenSearch.
+    Index the parsed benchmark data to OpenSearch using bulk indexing.
     
     Args:
-        data: The parsed benchmark data to index
+        data: List of parsed benchmark documents to index
         es_server: OpenSearch endpoint URL
         index_name: Name of the OpenSearch index
         
@@ -189,13 +190,22 @@ def index_to_opensearch(data: Dict[str, Any], es_server: str, index_name: str) -
             print(f"Error: Cannot connect to OpenSearch at {es_server}", file=sys.stderr)
             return False
         
-        # Index the document
-        response = es.index(
-            index=index_name,
-            body=data,
-        )
+        # Prepare bulk actions
+        actions = [
+            {
+                "_index": index_name,
+                "_source": doc
+            }
+            for doc in data
+        ]
         
-        print(f"Successfully indexed document to {index_name} with ID: {response['_id']}")
+        # Perform bulk indexing
+        success, failed = bulk(es, actions, raise_on_error=False)
+        
+        if failed:
+            print(f"Warning: {len(failed)} documents failed to index", file=sys.stderr)
+        
+        print(f"Successfully indexed {success} documents to {index_name}")
         return True
         
     except ConnectionError as e:
@@ -229,16 +239,16 @@ def main():
         success = index_to_opensearch(results, args.es_server, args.es_index)
         if not success:
             sys.exit(1)
-    
-    # Output results
-    output_json = json.dumps(results, indent=2)
-    
-    if args.output:
-        with open(args.output, 'w') as f:
-            f.write(output_json)
-        print(f"Results written to {args.output}")
     else:
-        print(output_json)
+        # Output results
+        output_json = json.dumps(results, indent=2)
+        
+        if args.output:
+            with open(args.output, 'w') as f:
+                f.write(output_json)
+            print(f"Results written to {args.output}")
+        else:
+            print(output_json)
 
 
 if __name__ == "__main__":
