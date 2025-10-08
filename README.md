@@ -81,19 +81,6 @@ For each individual request (successful or errored), the parser extracts:
 
 ## Installation
 
-### Local Installation
-
-1. Clone the repository:
-```bash
-git clone <repository-url>
-cd guidellm-results-parser
-```
-
-2. Install dependencies:
-```bash
-pip install opensearch-py
-```
-
 ### Container Build
 
 Build the container image:
