@@ -1,4 +1,4 @@
-FROM ghcr.io/vllm-project/guidellm:v0.3.0
+FROM ghcr.io/vllm-project/guidellm:v0.3.1
 
 USER root
 RUN pip install opensearch-py
